@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 import path from "path";
 import payload from "payload";
 import type { InitOptions } from "payload/config";
