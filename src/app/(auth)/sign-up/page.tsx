@@ -5,19 +5,19 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { z } from "zod";
-
-import { AuthCredentialsValidator, TAuthCredentialsValidator } from "@/lib/vaildators/account-credentials-validator";
 
 
+import {
+  AuthCredentialsValidator,
+  TAuthCredentialsValidator,
+} from "@/lib/vaildators/account-credentials-validator";
+import { trpc } from "@/trpc/client";
 
 const page = () => {
-
 
   const {
     register,
@@ -27,9 +27,11 @@ const page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
+  const { data } = trpc.anyApiRoute.useQuery();
+  console.log(data)
 
   const onSubmit = ({email, password}: TAuthCredentialsValidator) => {
-    //send data to the server
+    
   }
 
 
@@ -54,12 +56,12 @@ const page = () => {
           </div>
 
           <div className="grid gap-6">
-            <form onSubmit={handleSubmit(onsubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-2">
                 <div className="grid gap-1 py-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
-                  {...register("email")}
+                    {...register("email")}
                     className={cn({
                       "focus-visible:ring-red-500": errors.email,
                     })}
@@ -70,7 +72,7 @@ const page = () => {
                 <div className="grid gap-1 py-2">
                   <Label htmlFor="password">Password</Label>
                   <Input
-                  {...register("password")}
+                    {...register("password")}
                     className={cn({
                       "focus-visible:ring-red-500": errors.password,
                     })}
