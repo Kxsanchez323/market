@@ -1,7 +1,7 @@
 "use client";
 
 import { Icons } from "@/components/Icons";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -27,11 +27,12 @@ const page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
-  const { data } = trpc.anyApiRoute.useQuery();
-  console.log(data)
+  const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
+
+  })
 
   const onSubmit = ({email, password}: TAuthCredentialsValidator) => {
-    
+    mutate({ email, password})
   }
 
 
@@ -73,12 +74,15 @@ const page = () => {
                   <Label htmlFor="password">Password</Label>
                   <Input
                     {...register("password")}
+                    type="password"
                     className={cn({
                       "focus-visible:ring-red-500": errors.password,
                     })}
                     placeholder="password"
                   />
                 </div>
+
+                <Button>Sign up</Button>
               </div>
             </form>
           </div>
