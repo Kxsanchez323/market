@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-
+import { SubmitHandler } from "react-hook-form";
 
 import {
   AuthCredentialsValidator,
@@ -23,7 +23,7 @@ const page = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<TAuthCredentialsValidator>({
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
@@ -31,10 +31,10 @@ const page = () => {
 
   })
 
-  const onSubmit = ({email, password}: TAuthCredentialsValidator) => {
+
+  const onSubmit: SubmitHandler<TAuthCredentialsValidator> = ({email, password}) => {
     mutate({ email, password})
   }
-
 
   return (
     <>
